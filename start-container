@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# prepare the container
+if [ ! -d /.composer ]; then
+    mkdir /.composer
+fi
+rm /etc/nginx/sites-enabled/default
+mkdir /var/log/php-fpm/
+chmod -R ugo+rw /.composer
+
+# prepare SSL on the container
+chmod +x /opt/scripts/make-localhost-cert
+/opt/scripts/make-localhost-cert /var/www/localhost.crt
+
+# prepare the web application
+chown -R www-data:www-data /var/www/html
+chmod o+rwx /var/www/html/cron.d/*.sh
+
+# start the a container services
+/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

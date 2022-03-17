@@ -1,0 +1,7 @@
+##
+# We're going to load the environment variables into our intermediary script
+#
+
+* * * * * BASH_ENV=/var/www/html/.env /opt/scripts/runcron
+
+# Cron files must have an ending blank line
