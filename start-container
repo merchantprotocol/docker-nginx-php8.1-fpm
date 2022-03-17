@@ -13,6 +13,7 @@ chmod +x /opt/scripts/make-localhost-cert
 
 # prepare the web application
 chown -R www-data:www-data /var/www/html
+mkdir /var/log/html/cron.d/
 chmod o+rwx /var/www/html/cron.d/*.sh
 
 find /var/www/html/ -type f -exec chmod 644 {} \;

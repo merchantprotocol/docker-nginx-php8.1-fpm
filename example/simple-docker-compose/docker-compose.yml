@@ -1,0 +1,13 @@
+version: "2"
+
+services:
+  app:
+    container_name: mywebapp
+    image: byrdziak/merchantprotocol-webserver-nginx-php7.4:initial
+    restart: unless-stopped
+    ports:
+        - '80:80'
+        - '443:443'
+    volumes:
+      - '.:/var/www/html:rw'
+
