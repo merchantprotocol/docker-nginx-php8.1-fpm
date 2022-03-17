@@ -4,7 +4,6 @@
 if [ ! -d /.composer ]; then
     mkdir /.composer
 fi
-rm /etc/nginx/sites-enabled/default
 mkdir /var/log/php-fpm/
 chmod -R ugo+rw /.composer
 
@@ -15,6 +14,9 @@ chmod +x /opt/scripts/make-localhost-cert
 # prepare the web application
 chown -R www-data:www-data /var/www/html
 chmod o+rwx /var/www/html/cron.d/*.sh
+
+find /var/www/html/ -type f -exec chmod 644 {} \;
+find /var/www/html/ -type d -exec chmod 755 {} \;
 
 # start the a container services
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

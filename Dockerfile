@@ -69,17 +69,21 @@ RUN apt-get update \
 #    && pip install ngxtop nano
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php7.4
+RUN mkdir /opt/scripts/
 
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 COPY nginx/make-localhost-cert /opt/scripts/make-localhost-cert
-COPY nginx/nginx.conf /etc/nginx/sites-enabled/nginx
-COPY nginx/nginx-ssl.conf /etc/nginx/sites-enabled/nginx-ssl
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/sites-enabled/default.conf /etc/nginx/sites-available/default
+COPY nginx/sites-enabled/default-ssl.conf /etc/nginx/sites-enabled/default-ssl
 
 COPY php/php-fpm.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY php/php.ini /etc/php/7.4/cli/conf.d/99-sail.ini
 
+RUN rm -f /var/www/html/index.nginx-debian.html
+RUN mkdir /var/www/html/nginx.d/ 
 COPY html/* /var/www/html/
 
 # Installing the cron
