@@ -14,5 +14,7 @@ source /var/www/html/.env
 
 for file in /var/www/html/cron.d/*.sh
 do
-  ./"$file" >> /var/log/cron/"$file".log
+   filename=$(basename "$file")
+   chmod +x "$file"
+  "$file" >> /var/log/cron/"$filename".log
 done
