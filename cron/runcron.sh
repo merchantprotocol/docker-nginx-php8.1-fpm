@@ -16,5 +16,5 @@ for file in /var/www/html/cron.d/*.sh
 do
    filename=$(basename "$file")
    chmod +x "$file"
-  "$file" >> /var/log/cron/"$filename".log
+  "$file" >> /var/log/cron/"$filename".log 2>&1
 done

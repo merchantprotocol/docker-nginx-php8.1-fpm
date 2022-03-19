@@ -96,7 +96,7 @@ RUN rm -Rf /etc/cron.monthly
 RUN rm -Rf /etc/cron.hourly
 
 COPY cron/samplecron.sh /var/www/html/cron.d/samplecron.sh
-COPY cron/runcron.sh /opt/scripts/runcron
+COPY cron/runcron.sh /opt/scripts/runcron.sh
 COPY cron/crontab /etc/cron.d/webapp
 
 RUN crontab /etc/cron.d/webapp
