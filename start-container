@@ -13,11 +13,16 @@ chmod +x /opt/scripts/make-localhost-cert
 
 # prepare the web application
 chown -R www-data:www-data /var/www/html
+
+find /var/www/html/ -type f ! -path '*.sh' ! -path '/var/www/html/console' -exec chmod 644 {} \;
+find /var/www/html/ -type d -exec chmod 755 {} \;
+
+# Prep the cron.d directory
 mkdir /var/log/html/cron.d/
 chmod o+rwx /var/www/html/cron.d/*.sh
-
-find /var/www/html/ -type f -exec chmod 644 {} \;
-find /var/www/html/ -type d -exec chmod 755 {} \;
+find /var/www/html/cron.d -type f ! -path '*.sh' -delete
 
 # start the a container services
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+
+exit
