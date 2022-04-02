@@ -11,7 +11,19 @@ chmod -R ugo+rw /.composer
 chmod +x /opt/scripts/make-localhost-cert
 /opt/scripts/make-localhost-cert /var/www/localhost.crt
 
-# prepare the web application
+# Prepare custom nginx files
+mkdir -p /var/www/html/nginx.d/
+if test -e /var/www/html/nginx.d/php-fpm.conf; then
+    cp /var/www/html/nginx.d/php-fpm.conf /etc/php/7.4/fpm/pool.d/www.conf
+fi
+if test -e /var/www/html/nginx.d/nginx.conf; then
+    cp /var/www/html/nginx.d/nginx.conf /etc/nginx/sites-available/default
+fi
+if test -e /var/www/html/nginx.d/nginx-ssl.conf; then
+    cp /var/www/html/nginx.d/nginx-ssl.conf /etc/nginx/sites-enabled/default-ssl
+fi
+
+# Setting web application permissions
 chown -R www-data:www-data /var/www/html
 
 find /var/www/html/ -type f ! -path '*.sh' ! -path '/var/www/html/console' -exec chmod 644 {} \;
