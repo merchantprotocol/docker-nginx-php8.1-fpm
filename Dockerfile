@@ -80,7 +80,8 @@ COPY nginx/sites-enabled/default.conf /etc/nginx/sites-available/default
 COPY nginx/sites-enabled/default-ssl.conf /etc/nginx/sites-enabled/default-ssl
 
 COPY php/php-fpm.conf /etc/php/7.4/fpm/pool.d/www.conf
-COPY php/php.ini /etc/php/7.4/cli/conf.d/99-sail.ini
+COPY php/php.ini /etc/php/7.4/cli/php.ini
+COPY php/php.ini /etc/php/7.4/fpm/php.ini
 COPY php/opcache.ini /etc/php/7.4/mods-available/opcache.ini
 
 RUN rm -f /var/www/html/index.nginx-debian.html

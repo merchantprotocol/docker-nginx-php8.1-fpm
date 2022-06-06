@@ -22,6 +22,10 @@ fi
 if test -e /var/www/html/nginx.d/nginx-ssl.conf; then
     cp /var/www/html/nginx.d/nginx-ssl.conf /etc/nginx/sites-enabled/default-ssl
 fi
+if test -e /var/www/html/nginx.d/php.ini; then
+    cp /var/www/html/nginx.d/php.ini /etc/php/7.4/fpm/php.ini
+    cp /var/www/html/nginx.d/php.ini /etc/php/7.4/cli/php.ini
+fi
 
 # Setting web application permissions
 chown -R www-data:www-data /var/www/html
