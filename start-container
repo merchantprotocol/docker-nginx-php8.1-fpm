@@ -27,6 +27,11 @@ if test -e /var/www/html/nginx.d/php.ini; then
     cp /var/www/html/nginx.d/php.ini /etc/php/7.4/cli/php.ini
 fi
 
+# Moving potential supervisor files
+if test -d /var/www/html/supervisor.d/; then
+    cp -r /var/www/html/supervisor.d/* /etc/supervisor/conf.d/
+fi
+
 # Setting web application permissions
 chown -R www-data:www-data /var/www/html
 
