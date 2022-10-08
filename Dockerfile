@@ -30,6 +30,9 @@ RUN addgroup --gid ${GROUP_ID} www-data &&\
           --from=33:33 ${USER_ID}:${GROUP_ID} \
         /home/www-data
 
+RUN cp  /etc/apt/sources.list /etc/apt/sources.list.bak
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
 ## Now build the webserver
 RUN apt-get update \
     && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2 \
