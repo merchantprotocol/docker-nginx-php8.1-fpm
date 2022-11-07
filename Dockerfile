@@ -69,6 +69,13 @@ RUN apt-get update \
     && apt-get update -y \
     && apt-get install nginx -y
 
+# Install Databricks Driver
+RUN apt-get update \
+    && apt-get install -y unixodbc unixodbc-dev libsasl2-modules-gssapi-mit wget
+RUN wget https://databricks-bi-artifacts.s3.us-east-2.amazonaws.com/simbaspark-drivers/odbc/2.6.26/SimbaSparkODBC-2.6.26.1045-Debian-64bit.zip
+RUN unzip SimbaSparkODBC-2.6.26.1045-Debian-64bit.zip
+RUN dpkg -i simbaspark_2.6.26.1045-2_amd64.deb
+
 RUN apt-get update \
    && apt-get install pip -y \
    && pip install ngxtop nano
