@@ -96,6 +96,7 @@ COPY php/php-fpm.conf /etc/php/8.0/fpm/pool.d/www.conf
 COPY php/php.ini /etc/php/8.0/cli/php.ini
 COPY php/php.ini /etc/php/8.0/fpm/php.ini
 COPY php/opcache.ini /etc/php/8.0/mods-available/opcache.ini
+RUN mkdir -p /var/run/php
 
 RUN rm -f /var/www/html/index.nginx-debian.html
 RUN mkdir /var/www/html/nginx.d/ 
