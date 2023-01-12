@@ -119,6 +119,7 @@ RUN mkdir /var/log/cron/
 RUN chmod 0600 /etc/cron.d/webapp
 
 #######  Turn on/Run the container #########
+RUN service php8.0-fpm start
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 80
