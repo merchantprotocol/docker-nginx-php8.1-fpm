@@ -1,4 +1,5 @@
-FROM ubuntu:21.10
+FROM ubuntu:22.04
+#FROM ubuntu:21.10
 
 LABEL maintainer="Jonathon Byrdziak"
 
@@ -30,20 +31,13 @@ RUN addgroup --gid ${GROUP_ID} www-data &&\
           --from=33:33 ${USER_ID}:${GROUP_ID} \
         /home/www-data
 
-RUN cp  /etc/apt/sources.list /etc/apt/sources.list.bak
-RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
-
-## Now build the webserver
 RUN apt-get update \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2 \
-    && mkdir -p ~/.gnupg \
-    && chmod 600 ~/.gnupg \
-    && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
-    && apt-key adv --homedir ~/.gnupg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E5267A6C \
-    && apt-key adv --homedir ~/.gnupg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C300EE8C \
-    && echo "deb https://ppa.launchpadcontent.net/ondrej/php/ubuntu impish main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
-    && echo "deb-src https://ppa.launchpadcontent.net/ondrej/php/ubuntu impish main" >> /etc/apt/sources.list.d/ppa_ondrej_php.list \
-    && apt-get update \
+    && apt-get install lsb-release ca-certificates apt-transport-https software-properties-common -y \
+    && add-apt-repository ppa:ondrej/php \
+    && apt-get install -y gnupg gosu curl zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2
+
+
+RUN apt-get update \
     && apt-get install -y php8.0-cli php8.0-dev \
        php8.0-pgsql php8.0-sqlite3 php8.0-odbc php8.0-gd \
        php8.0-curl php8.0-memcached \
@@ -76,9 +70,16 @@ RUN wget https://databricks-bi-artifacts.s3.us-east-2.amazonaws.com/simbaspark-d
 RUN unzip SimbaSparkODBC-2.6.26.1045-Debian-64bit.zip
 RUN dpkg -i simbaspark_2.6.26.1045-2_amd64.deb
 
+# A couple tools for us
 RUN apt-get update \
    && apt-get install pip -y \
    && pip install ngxtop nano
+
+RUN echo 'deb http://apt.newrelic.com/debian/ newrelic non-free' >> /etc/apt/sources.list.d/newrelic.list \
+    && wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add - \
+    && apt-get update \
+    && apt-get -y install newrelic-php5 \
+    && NR_INSTALL_SILENT=1 newrelic-install install
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.0
 RUN mkdir /opt/scripts/

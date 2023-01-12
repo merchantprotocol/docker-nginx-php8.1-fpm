@@ -43,6 +43,18 @@ mkdir /var/log/html/cron.d/
 chmod o+rwx /var/www/html/cron.d/*.sh
 find /var/www/html/cron.d -type f ! -path '*.sh' -delete
 
+# Process web app startup specifics
+if test -e /var/www/html/docker.d/; then
+    chmod o+rwx /var/www/html/docker.d/*.sh
+    
+    for file in /var/www/html/docker.d/*.sh
+    do
+    filename=$(basename "$file")
+    "$file" >> /var/log/"$filename".log 2>&1
+    done
+
+fi
+
 # start the a container services
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
