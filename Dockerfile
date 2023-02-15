@@ -66,9 +66,18 @@ RUN apt-get update \
 # Install Databricks Driver
 RUN apt-get update \
     && apt-get install -y unixodbc unixodbc-dev libsasl2-modules-gssapi-mit wget
-RUN wget https://databricks-bi-artifacts.s3.us-east-2.amazonaws.com/simbaspark-drivers/odbc/2.6.26/SimbaSparkODBC-2.6.26.1045-Debian-64bit.zip
-RUN unzip SimbaSparkODBC-2.6.26.1045-Debian-64bit.zip
-RUN dpkg -i simbaspark_2.6.26.1045-2_amd64.deb
+RUN wget https://databricks-bi-artifacts.s3.us-east-2.amazonaws.com/simbaspark-drivers/odbc/2.6.29/SimbaSparkODBC-2.6.29.1049-Debian-64bit.zip
+RUN unzip SimbaSparkODBC-2.6.29.1049-Debian-64bit.zip
+RUN dpkg -i simbaspark_2.6.29.1049-2_amd64.deb
+
+# Fix ODBC MaxStringLength 255
+RUN wget https://github.com/php/php-src/archive/refs/tags/php-$(php -r 'echo PHP_VERSION;').zip
+RUN unzip php-$(php -r 'echo PHP_VERSION;').zip
+RUN sed -i 's/if (colsize < 256 && !S->going_long) {/if (1) {/g' php-src-php-$(php -r 'echo PHP_VERSION;')/ext/pdo_odbc/odbc_stmt.c
+RUN cd php-src-php-$(php -r 'echo PHP_VERSION;')/ext/pdo_odbc \
+    && phpize \
+    && ./configure --with-pdo-odbc=unixODBC,/usr/ \
+    && make install
 
 # A couple tools for us
 RUN apt-get update \
