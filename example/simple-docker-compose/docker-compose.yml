@@ -3,7 +3,7 @@ version: "2"
 services:
   app:
     container_name: mywebapp
-    image: byrdziak/merchantprotocol-webserver-nginx-php8.0:initial
+    image: byrdziak/merchantprotocol-webserver-nginx-php8.1:initial
     restart: unless-stopped
     ports:
         - '80:80'

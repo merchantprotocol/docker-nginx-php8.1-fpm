@@ -38,15 +38,15 @@ RUN apt-get update \
 
 
 RUN apt-get update \
-    && apt-get install -y php8.0-cli php8.0-dev \
-       php8.0-pgsql php8.0-sqlite3 php8.0-odbc php8.0-gd \
-       php8.0-curl php8.0-memcached \
-       php8.0-imap php8.0-mysql php8.0-mbstring \
-       php8.0-xml php8.0-zip php8.0-bcmath php8.0-soap \
-       php8.0-intl php8.0-readline php8.0-pcov \
-       php8.0-msgpack php8.0-igbinary php8.0-ldap \
-       php8.0-redis php8.0-xdebug \
-       php8.0-fpm \
+    && apt-get install -y php8.1-cli php8.1-dev \
+       php8.1-pgsql php8.1-sqlite3 php8.1-odbc php8.1-gd \
+       php8.1-curl php8.1-memcached \
+       php8.1-imap php8.1-mysql php8.1-mbstring \
+       php8.1-xml php8.1-zip php8.1-bcmath php8.1-soap \
+       php8.1-intl php8.1-readline php8.1-pcov \
+       php8.1-msgpack php8.1-igbinary php8.1-ldap \
+       php8.1-redis php8.1-xdebug \
+       php8.1-fpm \
     && php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
     && curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
     && apt-get install -y nodejs \
@@ -84,13 +84,13 @@ RUN apt-get update \
    && apt-get install pip -y \
    && pip install ngxtop nano
 
-RUN echo 'deb http://apt.newrelic.com/debian/ newrelic non-free' >> /etc/apt/sources.list.d/newrelic.list \
-    && wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add - \
-    && apt-get update \
-    && apt-get -y install newrelic-php5 \
-    && NR_INSTALL_SILENT=1 newrelic-install install
+#RUN apt-get update && \
+#      apt-get -y install sudo
 
-RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.0
+#RUN curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash \
+#    && NR_INSTALL_SILENT=1 /usr/local/bin/newrelic install -n nginx-open-source-integration
+
+RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 RUN mkdir /opt/scripts/
 
 COPY start-container /usr/local/bin/start-container
@@ -101,10 +101,10 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/sites-enabled/default.conf /etc/nginx/sites-available/default
 COPY nginx/sites-enabled/default-ssl.conf /etc/nginx/sites-enabled/default-ssl
 
-COPY php/php-fpm.conf /etc/php/8.0/fpm/pool.d/www.conf
-COPY php/php.ini /etc/php/8.0/cli/php.ini
-COPY php/php.ini /etc/php/8.0/fpm/php.ini
-COPY php/opcache.ini /etc/php/8.0/mods-available/opcache.ini
+COPY php/php-fpm.conf /etc/php/8.1/fpm/pool.d/www.conf
+COPY php/php.ini /etc/php/8.1/cli/php.ini
+COPY php/php.ini /etc/php/8.1/fpm/php.ini
+COPY php/opcache.ini /etc/php/8.1/mods-available/opcache.ini
 RUN mkdir -p /var/run/php
 
 RUN rm -f /var/www/html/index.nginx-debian.html
@@ -129,7 +129,7 @@ RUN mkdir /var/log/cron/
 RUN chmod 0600 /etc/cron.d/webapp
 
 #######  Turn on/Run the container #########
-RUN service php8.0-fpm start
+RUN service php8.1-fpm start
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 80

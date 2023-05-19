@@ -14,7 +14,7 @@ chmod +x /opt/scripts/make-localhost-cert
 # Prepare custom nginx files
 mkdir -p /var/www/html/nginx.d/
 if test -e /var/www/html/nginx.d/php-fpm.conf; then
-    cp /var/www/html/nginx.d/php-fpm.conf /etc/php/8.0/fpm/pool.d/www.conf
+    cp /var/www/html/nginx.d/php-fpm.conf /etc/php/8.1/fpm/pool.d/www.conf
 fi
 if test -e /var/www/html/nginx.d/nginx.conf; then
     cp /var/www/html/nginx.d/nginx.conf /etc/nginx/sites-available/default
@@ -23,8 +23,8 @@ if test -e /var/www/html/nginx.d/nginx-ssl.conf; then
     cp /var/www/html/nginx.d/nginx-ssl.conf /etc/nginx/sites-enabled/default-ssl
 fi
 if test -e /var/www/html/nginx.d/php.ini; then
-    cp /var/www/html/nginx.d/php.ini /etc/php/8.0/fpm/php.ini
-    cp /var/www/html/nginx.d/php.ini /etc/php/8.0/cli/php.ini
+    cp /var/www/html/nginx.d/php.ini /etc/php/8.1/fpm/php.ini
+    cp /var/www/html/nginx.d/php.ini /etc/php/8.1/cli/php.ini
 fi
 
 # Moving potential supervisor files
